@@ -42,13 +42,13 @@ class CaseInsensitiveDictionary(dict):
 
 class Request(models.Model):
     id = CharField(max_length=36, default=uuid1, primary_key=True)
-    path = CharField(max_length=300, db_index=True)
+    path = CharField(max_length=255, db_index=True)
     query_params = TextField(blank=True, default='')
     raw_body = TextField(blank=True, default='')
     body = TextField(blank=True, default='')
     method = CharField(max_length=10)
     start_time = DateTimeField(default=timezone.now, db_index=True)
-    view_name = CharField(max_length=300, db_index=True, blank=True, default='')
+    view_name = CharField(max_length=255, db_index=True, blank=True, default='')
     end_time = DateTimeField(null=True, blank=True)
     time_taken = FloatField(blank=True, null=True)
     encoded_headers = TextField(blank=True, default='')
@@ -203,7 +203,7 @@ class SQLQuery(models.Model):
 
 
 class BaseProfile(models.Model):
-    name = CharField(max_length=300, blank=True, default='')
+    name = CharField(max_length=255, blank=True, default='')
     start_time = DateTimeField(default=timezone.now)
     end_time = DateTimeField(null=True, blank=True)
     request = ForeignKey('Request', null=True, blank=True, db_index=True)
@@ -220,10 +220,10 @@ class BaseProfile(models.Model):
 
 
 class Profile(BaseProfile):
-    file_path = CharField(max_length=300, blank=True, default='')
+    file_path = CharField(max_length=255, blank=True, default='')
     line_num = IntegerField(null=True, blank=True)
     end_line_num = IntegerField(null=True, blank=True)
-    func_name = CharField(max_length=300, blank=True, default='')
+    func_name = CharField(max_length=255, blank=True, default='')
     exception_raised = BooleanField(default=False)
     queries = ManyToManyField('SQLQuery', related_name='profiles', db_index=True)
     dynamic = BooleanField(default=False)
